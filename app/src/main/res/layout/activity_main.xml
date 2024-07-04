@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://sche mas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:src="@drawable/logosoignemoi"/>
+
+    <!-- Formulaire de connexion -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        android:padding="20dp"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrez vos identifiants"
+            android:textSize="20sp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/noto_sans_font_family"
+            android:textFontWeight="800"
+            android:layout_marginBottom="16dp"
+            />
+
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom d'utilisateur"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/noto_sans_font_family"
+            android:textFontWeight="800"
+            android:background="@color/white"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mot de passe"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/noto_sans_font_family"
+            android:textFontWeight="800"
+            android:background="@color/white"/>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connexion"
+            android:layout_marginTop="16dp"
+            android:textSize="24dp"
+            android:padding="10dp"
+            android:fontFamily="@font/noto_sans_font_family"
+            style="@style/CustomButtonStyleDarkGrey"
+            android:background="@drawable/button_background_orange"
+           />
+
+    </LinearLayout>
+
+</LinearLayout>
