@@ -26,6 +26,9 @@ android {
             debuggable true
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
     productFlavors {
         prod {
             buildConfigField "String", "API_URL", ""

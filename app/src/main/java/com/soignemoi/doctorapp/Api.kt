@@ -2,10 +2,10 @@ package com.soignemoi.doctorapp
 
 import android.util.Log
 import com.soignemoi.doctorapp.request.LoginRequest
+import com.soignemoi.doctorapp.response.GetStaysResponse
 import com.soignemoi.doctorapp.response.LoginResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,6 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
@@ -43,6 +45,11 @@ interface Api {
     fun login (
         @Body params: LoginRequest
     ) :Call<LoginResponse>
+
+    @GET("api/stays")
+    fun getStays (
+        @Header ("Authorization") authorization: String = "${AppManager.token}"
+    ) :Call<List <GetStaysResponse>>
 }
 
 fun <T> callback(success: ((Response<T>) -> Unit)?, failure: ((t: Throwable) -> Unit)? = null): Callback<T> {

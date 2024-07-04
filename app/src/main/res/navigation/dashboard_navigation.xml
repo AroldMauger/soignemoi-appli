@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@+id/main_navigation"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/appointment_list">
+
+    <fragment
+        android:id="@+id/appointment_list"
+        android:name="com.soignemoi.doctorapp.dashboard.staylist.StayListFragment"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/from_list_to_opinion"
+           >
+        </action>
+    </fragment>
+
+
+</navigation>
