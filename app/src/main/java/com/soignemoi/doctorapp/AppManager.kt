@@ -1,4 +1,4 @@
-package com.garagetrempu.android
+package com.soignemoi.doctorapp
 
 import android.content.Context
 import org.koin.standalone.KoinComponent

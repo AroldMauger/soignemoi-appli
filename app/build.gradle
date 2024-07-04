@@ -4,11 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    namespace 'com.garagetrempu.android'
+    namespace 'com.soignemoi.doctorapp'
     compileSdk 33
+    flavorDimensions "default"
 
     defaultConfig {
-        applicationId "com.garagetrempu.android"
+        applicationId "com.soignemoi.doctorapp"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -20,6 +21,17 @@ android {
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+    productFlavors {
+        prod {
+            buildConfigField "String", "API_URL", ""
+        }
+        dev {
+            buildConfigField "String", "API_URL", "\"http://10.0.2.2:8000/\"";
         }
     }
     compileOptions {

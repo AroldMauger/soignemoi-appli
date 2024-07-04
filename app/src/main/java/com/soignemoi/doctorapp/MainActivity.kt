@@ -1,12 +1,12 @@
-package com.garagetrempu.android
+package com.soignemoi.doctorapp.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.loginButton
-import kotlinx.android.synthetic.main.activity_main.password
+import kotlinx.android.synthetic.main.activity_main.identification
 import kotlinx.android.synthetic.main.activity_main.user
 import org.koin.android.ext.android.inject
-
+import com.soignemoi.doctorapp.R
 class MainActivity : AppCompatActivity() {
     private val viewModel by inject<LoginViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         loginButton.setOnClickListener {
-            viewModel.login(user.text.toString(), password.text.toString())
+            viewModel.login(user.text.toString(), identification.text.toString())
         }
     }
 }
