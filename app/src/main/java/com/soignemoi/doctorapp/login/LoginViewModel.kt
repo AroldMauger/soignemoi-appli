@@ -19,7 +19,15 @@ class LoginViewModel : ViewModel() {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         AppManager.token = response.body()!!.token
-                        Log.d("LoginViewModel", "Token: ${AppManager.token}") // Add this log statement
+                        Log.d("LoginViewModel", "Token: ${AppManager.token}")
+
+                        // Stockage du `doctorLastName` dans SharedPreferences
+                        val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                        with(sharedPreferences.edit()) {
+                            putString("doctorLastName", lastname)
+                            apply()
+                        }
+
                         callback(true)
                     } else {
                         showDialog(context, "Identifiants incorrects")

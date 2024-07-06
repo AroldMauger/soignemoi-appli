@@ -16,6 +16,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 import com.google.gson.GsonBuilder
 
@@ -23,26 +24,28 @@ object ApiConfiguration {
     const val TIMEOUT: Long = 60
 }
 
+// Intercepteur pour le logging des requêtes
 val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
-val gson = GsonBuilder().setLenient().create()
-
+// Configuration du client HTTP
 val client = OkHttpClient.Builder()
     .connectTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
     .addInterceptor(interceptor)
     .retryOnConnectionFailure(true)
     .build()
 
+// Création de l'instance Retrofit
 val service: Api = Retrofit.Builder()
-    .baseUrl(BuildConfig.API_URL)
+    .baseUrl(BuildConfig.API_URL)  // Assurez-vous que BuildConfig.API_URL est défini correctement dans votre gradle
     .client(client)
     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-    .addConverterFactory(GsonConverterFactory.create(gson))
+    .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
     .build()
     .create(Api::class.java)
 
+// Définition de l'interface API
 interface Api {
     @POST("api/auth/login_doctor")
     @FormUrlEncoded
@@ -53,9 +56,13 @@ interface Api {
 
     @GET("api/stays")
     fun getStays(
+        @Query("doctorLastName") doctorLastName: String? = null, // Paramètre de requête pour le filtrage
+        @Header("Accept") accept: String = "application/json",
+        @Header("Authorization") authHeader: String? = null  // En-tête pour l'authentification
     ): Call<List<GetStaysResponse>>
 }
 
+// Fonction pour gérer les callbacks des requêtes API
 fun <T> callback(success: ((Response<T>) -> Unit)?, failure: ((Throwable) -> Unit)? = null): Callback<T> {
     return object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {

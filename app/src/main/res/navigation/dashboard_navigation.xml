@@ -9,6 +9,10 @@
         android:id="@+id/stay_list"
         android:name="com.soignemoi.doctorapp.dashboard.staylist.StayListFragment"
         tools:layout="@layout/fragment_dashboard">
+        <argument
+            android:name="doctorLastName"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/from_list_to_opinion"
            >
