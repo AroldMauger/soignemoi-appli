@@ -11,32 +11,34 @@ import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import kotlinx.android.synthetic.main.item_stay.view.seeMore
 import kotlinx.android.synthetic.main.item_stay.view.stayDate
+import kotlinx.android.synthetic.main.item_stay.view.stayDoctor
 import kotlinx.android.synthetic.main.item_stay.view.stayReason
 import kotlinx.android.synthetic.main.item_stay.view.stayTime
 import kotlinx.android.synthetic.main.item_stay.view.stayUser
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class StayAdapter (val items:List<GetStaysResponse>, val listener: Listener): RecyclerView.Adapter<StayAdapter.ViewHolder> () {
+class StayAdapter(val items: List<GetStaysResponse>, val listener: Listener) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
-        fun bind(stay: GetStaysResponse, listener: Listener){
+        fun bind(stay: GetStaysResponse, listener: Listener) {
             val date = LocalDateTime.parse(stay.entrydate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
             val formattedDate = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             val formattedTime = date.format(DateTimeFormatter.ofPattern("HH':'mm"))
             itemView.stayDate.text = formattedDate
             itemView.stayTime.text = formattedTime
-            itemView.stayUser.text = stay.user
-            itemView.stayReason.text = stay.reason
-            itemView.seeMore.setOnClickListener{
-                var toto = ""
+            itemView.stayUser.text = stay.user.username
+            itemView.stayReason.text = stay.reason.name
+            itemView.stayDoctor.text = stay.doctor.name
+            itemView.seeMore.setOnClickListener {
+                listener.onItemSelected(stay)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_stay, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_stay, parent, false))
 
     override fun getItemCount(): Int = items.size
 
@@ -46,6 +48,6 @@ class StayAdapter (val items:List<GetStaysResponse>, val listener: Listener): Re
     }
 
     interface Listener {
-        fun onItemSelected (stay: GetStaysResponse)
+        fun onItemSelected(stay: GetStaysResponse)
     }
 }

@@ -1,7 +1,6 @@
 package com.soignemoi.doctorapp
 
 import android.util.Log
-import com.soignemoi.doctorapp.request.LoginRequest
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import com.soignemoi.doctorapp.response.LoginResponse
 import okhttp3.OkHttpClient
@@ -12,21 +11,23 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
+import com.google.gson.GsonBuilder
 
 object ApiConfiguration {
     const val TIMEOUT: Long = 60
 }
 
 val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-    level = HttpLoggingInterceptor.Level.HEADERS
+    level = HttpLoggingInterceptor.Level.BODY
 }
+
+val gson = GsonBuilder().setLenient().create()
 
 val client = OkHttpClient.Builder()
     .connectTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
@@ -38,7 +39,7 @@ val service: Api = Retrofit.Builder()
     .baseUrl(BuildConfig.API_URL)
     .client(client)
     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-    .addConverterFactory(GsonConverterFactory.create())
+    .addConverterFactory(GsonConverterFactory.create(gson))
     .build()
     .create(Api::class.java)
 
@@ -52,7 +53,6 @@ interface Api {
 
     @GET("api/stays")
     fun getStays(
-        @Header ("Authorization") authorization: String = "${AppManager.token}",
     ): Call<List<GetStaysResponse>>
 }
 
