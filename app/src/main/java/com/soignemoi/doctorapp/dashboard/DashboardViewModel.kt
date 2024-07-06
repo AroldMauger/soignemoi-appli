@@ -18,7 +18,7 @@ class DashboardViewModel : ViewModel() {
                         callback()
                     }
                 }, {
-                    Log.e("DashboardViewModel", "Failed to load appointments: ${it.message}")
+                    Log.e("DashboardViewModel", "Failed to load stays: ${it.message}")
                 }
             ))
     }

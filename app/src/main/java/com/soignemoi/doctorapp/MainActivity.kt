@@ -3,6 +3,7 @@ package com.soignemoi.doctorapp.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.BuildConfig
 import kotlinx.android.synthetic.main.activity_main.loginButton
 import kotlinx.android.synthetic.main.activity_main.identification
@@ -13,6 +14,7 @@ import com.soignemoi.doctorapp.dashboard.DashboardActivity
 import kotlinx.android.synthetic.main.activity_main.lastname
 
 class MainActivity : AppCompatActivity() {
+    private val appManager by inject<AppManager>()
     private val viewModel by inject<LoginViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,17 +22,26 @@ class MainActivity : AppCompatActivity() {
 
         setupListeners()
         if (BuildConfig.DEBUG) {
-            lastname.setText("YIN")
-            identification.setText("CAR001")
+            lastname.setText("JO")
+            identification.setText("CHI001")
         }
     }
 
     private fun setupListeners() {
         loginButton.setOnClickListener {
-            viewModel.login(lastname.text.toString(), identification.text.toString()) {
-                val intent = Intent(this, DashboardActivity::class.java)
-                startActivity(intent)
-            }
+            val lastnameValue = lastname.text.toString()
+            val identificationValue = identification.text.toString()
+
+            // Log les valeurs pour déboguer
+            println("Trying to log in with lastname: $lastnameValue, identification: $identificationValue")
+
+            viewModel.logindoctor(lastnameValue, identificationValue, { success ->
+                if (success) {
+                    val intent = Intent(this, DashboardActivity::class.java)
+                    startActivity(intent)
+                }
+            }, this)
         }
     }
+
 }

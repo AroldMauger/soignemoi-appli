@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.response.GetStaysResponse
+import kotlinx.android.synthetic.main.item_stay.view.seeMore
 import kotlinx.android.synthetic.main.item_stay.view.stayDate
 import kotlinx.android.synthetic.main.item_stay.view.stayReason
 import kotlinx.android.synthetic.main.item_stay.view.stayTime
@@ -28,8 +29,9 @@ class StayAdapter (val items:List<GetStaysResponse>, val listener: Listener): Re
             itemView.stayTime.text = formattedTime
             itemView.stayUser.text = stay.user
             itemView.stayReason.text = stay.reason
-            // ajouter AVIS
-            // ajouter PRESCRIPTION
+            itemView.seeMore.setOnClickListener{
+                var toto = ""
+            }
         }
     }
 
@@ -44,6 +46,6 @@ class StayAdapter (val items:List<GetStaysResponse>, val listener: Listener): Re
     }
 
     interface Listener {
-        fun onItemSelected (appointment: GetStaysResponse)
+        fun onItemSelected (stay: GetStaysResponse)
     }
 }

@@ -32,8 +32,8 @@ class StayListFragment : Fragment(), StayAdapter.Listener{
             list.layoutManager = LinearLayoutManager(context)
         }
     }
-    override fun onItemSelected(appointment: GetStaysResponse) {
-        viewModel.selectedStay= appointment
+    override fun onItemSelected(stay: GetStaysResponse) {
+        viewModel.selectedStay= stay
         findNavController().navigateSafe(R.id.from_list_to_opinion)
     }
 }

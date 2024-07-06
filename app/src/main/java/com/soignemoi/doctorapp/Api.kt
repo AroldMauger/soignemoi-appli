@@ -13,6 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -32,7 +34,7 @@ val client = OkHttpClient.Builder()
     .retryOnConnectionFailure(true)
     .build()
 
-val service:Api = Retrofit.Builder()
+val service: Api = Retrofit.Builder()
     .baseUrl(BuildConfig.API_URL)
     .client(client)
     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -41,25 +43,26 @@ val service:Api = Retrofit.Builder()
     .create(Api::class.java)
 
 interface Api {
-    @POST("api/auth/login")
-    fun login (
-        @Body params: LoginRequest
-    ) :Call<LoginResponse>
+    @POST("api/auth/login_doctor")
+    @FormUrlEncoded
+    fun logindoctor(
+        @Field("lastname") lastname: String,
+        @Field("identification") identification: String
+    ): Call<LoginResponse>
 
     @GET("api/stays")
-    fun getStays (
-        @Header ("Authorization") authorization: String = "${AppManager.token}"
-    ) :Call<List <GetStaysResponse>>
+    fun getStays(
+        @Header ("Authorization") authorization: String = "${AppManager.token}",
+    ): Call<List<GetStaysResponse>>
 }
 
-fun <T> callback(success: ((Response<T>) -> Unit)?, failure: ((t: Throwable) -> Unit)? = null): Callback<T> {
+fun <T> callback(success: ((Response<T>) -> Unit)?, failure: ((Throwable) -> Unit)? = null): Callback<T> {
     return object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
             success?.invoke(response)
         }
 
         override fun onFailure(call: Call<T>, t: Throwable) {
-            print(t.message)
             Log.e("Api", "onFailure : $t")
             failure?.invoke(t)
         }

@@ -77,6 +77,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/seeMore"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="\uf06e"
+        android:fontFamily="@font/fa_regular400"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/orange"
 
+        />
 
 </LinearLayout>
