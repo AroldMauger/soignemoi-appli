@@ -25,7 +25,8 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_dashboard, null, false)
-    }
+
+}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

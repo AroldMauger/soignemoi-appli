@@ -6,29 +6,24 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
-import com.soignemoi.doctorapp.BuildConfig
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardActivity
-import kotlinx.android.synthetic.main.activity_main.identification
-import kotlinx.android.synthetic.main.activity_main.lastname
-import kotlinx.android.synthetic.main.activity_main.loginButton
-import kotlinx.android.synthetic.main.activity_main.titleofapp
-import org.koin.android.ext.android.inject
+import kotlinx.android.synthetic.main.activity_main.*  // Assurez-vous que vous utilisez le bon layout ici
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel by inject<LoginViewModel>()
+    private val viewModel by viewModel<LoginViewModel>()  // Utilisez `viewModel` de Koin ou le constructeur approprié pour votre ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)  // Assurez-vous que vous utilisez le bon layout ici
 
         // Hide the ActionBar
-        if (supportActionBar != null) {
-            supportActionBar?.hide()
-        }
+        supportActionBar?.hide()
 
         // Set up colored text
         val text = "L’application réservée aux médecins de SoigneMoi"
+
         val spannableString = SpannableString(text)
 
         val startSoigne = text.indexOf("Soigne")
@@ -56,10 +51,6 @@ class MainActivity : AppCompatActivity() {
         titleofapp.text = spannableString
 
         setupListeners()
-        if (BuildConfig.DEBUG) {
-            lastname.setText("JO")
-            identification.setText("CHI001")
-        }
     }
 
     private fun setupListeners() {
@@ -72,8 +63,13 @@ class MainActivity : AppCompatActivity() {
 
             viewModel.logindoctor(lastnameValue, identificationValue, { success ->
                 if (success) {
-                    val intent = Intent(this, DashboardActivity::class.java)
-                    startActivity(intent)
+                    viewModel.fetchDoctorDetails(lastnameValue, this) { doctorName, specialityName ->
+                        val intent = Intent(this, DashboardActivity::class.java).apply {
+                            putExtra("doctorName", doctorName)
+                            putExtra("specialityName", specialityName)
+                        }
+                        startActivity(intent)
+                    }
                 }
             }, this)
         }

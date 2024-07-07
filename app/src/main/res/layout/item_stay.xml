@@ -2,34 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="12dp"
-    android:weightSum="6"
     android:background="@drawable/border_background"
     >
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_weight="2"
-        android:padding="8dp"
-        android:id="@+id/displayInfo"
-        >
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="6"
+            >
 
             <TextView
-                android:id="@+id/stayDate"
-                android:layout_width="match_parent"
+                android:id="@+id/stayTime"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DATE"
+                android:fontFamily="@font/noto_sans_font_family"
+                android:textFontWeight="800"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:textColor="@color/orange"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="|"
+                android:layout_weight="1"
                 android:fontFamily="@font/noto_sans_font_family"
                 android:textFontWeight="800"
                 android:textSize="18sp"
@@ -37,20 +38,21 @@
                 android:layout_marginBottom="4dp" />
 
             <TextView
-                android:id="@+id/stayTime"
-                android:layout_width="match_parent"
+                android:id="@+id/stayDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:textFontWeight="800"
+
                 android:fontFamily="@font/noto_sans_font_family"
                 android:textColor="@color/orange"
                 android:text="Heure" />
 
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="2"
@@ -63,7 +65,6 @@
             android:fontFamily="@font/noto_sans_font_family"
             android:textFontWeight="600"
             android:textSize="18sp"
-            android:gravity="center"
             android:text="Utilisateur"/>
 
         <TextView
@@ -71,46 +72,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans_font_family"
-            android:gravity="center"
             android:textSize="18sp"
             android:text="Motif"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="2"
+        android:orientation="horizontal"
         android:padding="8dp"
         >
-    <TextView
-        android:id="@+id/seeMore"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="\uf06e"
-        android:fontFamily="@font/fa_regular400"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/orange"
-
-        />
-
-    <TextView
-        android:id="@+id/stayDoctor"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:fontFamily="@font/fa_regular400"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/orange"
-        />
-
-</LinearLayout>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border_black_back_white"
+            android:layout_marginRight="50dp"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="AVIS"
+            android:fontFamily="@font/noto_sans_font_family"
+            android:textColor="@color/orange"
+            android:layout_marginRight="10dp"
+            android:textFontWeight="800"
+            />
+        <TextView
+            android:id="@+id/addOpinion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="\uf303"
+            android:fontFamily="@font/fa_solid900"
+            android:textColor="@color/orange"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border_black_back_white"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="PRESCRIPTION"
+            android:fontFamily="@font/noto_sans_font_family"
+            android:textColor="@color/orange"
+            android:layout_marginRight="10dp"
+            android:textFontWeight="800"
+            />
+        <TextView
+            android:id="@+id/addPrescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="\uf303"
+            android:fontFamily="@font/fa_solid900"
+            android:textColor="@color/orange"
+            />
+        </LinearLayout>
 
     </LinearLayout>
+
+</LinearLayout>
