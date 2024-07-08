@@ -53,7 +53,7 @@ class LoginViewModel : ViewModel() {
             })
     }
 
-     fun fetchDoctorDetails(lastname: String, context: Context, callback: (String, String) -> Unit) {
+    fun fetchDoctorDetails(lastname: String, context: Context, callback: (String, String) -> Unit) {
         service.getStays(doctorLastName = lastname)  // Remplacez avec un paramètre correct ou adaptez l'API
             .enqueue(object : Callback<List<GetStaysResponse>> {
                 override fun onResponse(call: Call<List<GetStaysResponse>>, response: Response<List<GetStaysResponse>>) {

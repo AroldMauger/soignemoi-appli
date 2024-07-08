@@ -14,10 +14,15 @@
             app:argType="string"
             android:defaultValue="" />
         <action
-            android:id="@+id/from_list_to_opinion"
-           >
-        </action>
+            android:id="@+id/from_list_to_add_opinion"
+            app:destination="@id/add_opinion"/>
     </fragment>
-
+    <fragment
+        android:id="@+id/add_opinion"
+        android:name="com.soignemoi.doctorapp.add_opinion.AddOpinionFragment">
+        <action
+            android:id="@+id/from_addopinion_to_list"
+            app:destination="@id/stay_list" />
+    </fragment>
 
 </navigation>

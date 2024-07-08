@@ -45,6 +45,6 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
 
     override fun onItemSelected(stay: GetStaysResponse) {
         viewModel.selectedStay = stay
-        findNavController().navigateSafe(R.id.from_list_to_opinion)
+        findNavController().navigateSafe(R.id.from_list_to_add_opinion)
     }
 }
