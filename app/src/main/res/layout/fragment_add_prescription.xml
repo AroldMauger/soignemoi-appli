@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,7 +37,7 @@
             android:id="@+id/signup_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SAISIR UN AVIS"
+            android:text="SAISIR UNE PRESCRIPTION"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_below="@id/returntomain_button"
@@ -82,9 +87,9 @@
                         />
 
                     <LinearLayout
-                        android:id="@+id/dateAddOpinion"
+                        android:id="@+id/dateAddPrescription"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:background="@drawable/border_black_back_white"
@@ -118,40 +123,34 @@
                 <EditText
                     android:id="@+id/btn_add_opinion"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ajouter un avis"
+                    android:layout_height="50dp"
+                    android:text="Ajouter un traitement"
                     android:fontFamily="@font/noto_sans_font_family"
                     android:paddingHorizontal="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/border_black_back_grey"
                     />
-                <!-- Observation -->
-                <EditText
-                    android:id="@+id/opinion"
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listMedicines"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="Observations"
-                    android:fontFamily="@font/noto_sans_font_family"
-                    android:padding="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edit_text_background"
-                    android:minHeight="100dp"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:lines="4"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/btn_add_opinion"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
-                <!-- Bouton de soumission -->
+
                 <Button
                     android:id="@+id/submit_opinion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:text="SAISIR AVIS"
-                    android:layout_marginTop="16dp"
-                    android:textSize="20dp"
+                    android:text="SAISIR PRESCRIPTION"
+                    android:layout_marginTop="20dp"
+                    android:textSize="18dp"
                     android:paddingHorizontal="50dp"
                     android:paddingVertical="6dp"
                     android:textColor="@color/white"
@@ -160,8 +159,7 @@
                     />
 
             </LinearLayout>
-        </ScrollView>
-
-    </RelativeLayout>
-
-</LinearLayout>
+         </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

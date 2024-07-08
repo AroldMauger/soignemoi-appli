@@ -11,12 +11,13 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.soignemoi.doctorapp.R
+import kotlinx.android.synthetic.main.fragment_add_opinion.dateAddOpinion
 import kotlinx.android.synthetic.main.fragment_add_opinion.returntomain_button
 import java.util.*
 
 class AddOpinionFragment : Fragment() {
 
-    private lateinit var dateTextView: TextView
+    private lateinit var dateAddOpinion: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,9 +25,9 @@ class AddOpinionFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_opinion, container, false)
 
-        dateTextView = view.findViewById(R.id.dateTextView)
+        dateAddOpinion = view.findViewById(R.id.dateTextView)
 
-        dateTextView.setOnClickListener {
+        dateAddOpinion.setOnClickListener {
             showDatePickerDialog()
         }
 
@@ -43,7 +44,7 @@ class AddOpinionFragment : Fragment() {
             requireContext(),
             { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
-                dateTextView.text = selectedDate
+                dateAddOpinion.text = selectedDate
             },
             year, month, day
         )
