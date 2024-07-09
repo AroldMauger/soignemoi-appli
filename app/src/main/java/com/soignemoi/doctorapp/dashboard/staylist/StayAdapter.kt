@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class StayAdapter(
-    private val doctorId: Int,  // Assurez-vous que doctorId est un paramètre ici
+    private val doctorId: Int,
     private val items: List<GetStaysResponse>,
     private val listener: Listener
 ) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
@@ -33,7 +33,11 @@ class StayAdapter(
             itemView.stayUser.text = "$userFirstName $userLastName"
             itemView.stayReason.text = stay.reason.name
             itemView.addOpinion.setOnClickListener {
-                listener.onItemSelected(stay, doctorId)  // Passez doctorId ici
+                listener.onAddOpinion(stay, doctorId)
+            }
+            itemView.addPrescription.setOnClickListener {
+                listener.onAddPrescription(stay, doctorId)
+
             }
         }
     }
@@ -49,6 +53,7 @@ class StayAdapter(
     }
 
     interface Listener {
-        fun onItemSelected(stay: GetStaysResponse, doctorId: Int)  // Passez doctorId dans l'interface
+        fun onAddOpinion(stay: GetStaysResponse, doctorId: Int)
+        fun onAddPrescription(stay: GetStaysResponse, doctorId: Int)
     }
 }

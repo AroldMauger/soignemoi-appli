@@ -43,10 +43,17 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
         }
     }
 
-    override fun onItemSelected(stay: GetStaysResponse, doctorId: Int) {
+    override fun onAddOpinion(stay: GetStaysResponse, doctorId: Int) {
         viewModel.selectedStay = stay
         findNavController().navigate(R.id.from_list_to_add_opinion, Bundle().apply {
             putInt("doctorId", doctorId)  // Assurez-vous que vous passez doctorId
+            putInt("stayId", stay.id)
+        })
+    }
+
+    override fun onAddPrescription(stay: GetStaysResponse, doctorId: Int) {
+        viewModel.selectedStay = stay
+        findNavController().navigate(R.id.action_stayList_to_add_prescription, Bundle().apply {
             putInt("stayId", stay.id)
         })
     }

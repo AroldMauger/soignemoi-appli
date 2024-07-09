@@ -17,5 +17,6 @@ class DashboardActivity : AppCompatActivity() {
 
         // Définir le texte du TextView avec les informations du médecin et de la spécialité
         titledoctor.text = "Docteur $doctorName, $specialityName"
+
     }
 }

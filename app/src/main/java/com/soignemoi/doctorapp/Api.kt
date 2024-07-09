@@ -19,9 +19,16 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 import com.google.gson.GsonBuilder
+import com.soignemoi.doctorapp.dataclass.Prescription
+import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
+import com.soignemoi.doctorapp.request.NewMedicineDTO
 import com.soignemoi.doctorapp.response.GetOpinionResponse
-import com.soignemoi.doctorapp.response.NewOpinionDTO
+import com.soignemoi.doctorapp.request.NewOpinionDTO
+import com.soignemoi.doctorapp.response.GetMedicineResponse
+import com.soignemoi.doctorapp.response.MedicineResponse
+import com.soignemoi.doctorapp.response.PrescriptionsResponse
 import retrofit2.http.Body
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 object ApiConfiguration {
@@ -72,6 +79,32 @@ interface Api {
 
     @GET("api/opinions")
     fun getOpinionsByStay(@Query("stayId") stayId: Int): Call<List<GetOpinionResponse>>
+
+    @POST("api/prescriptions")
+    fun addPrescription(
+        @Body prescription: Prescription
+    ): Call<Prescription>
+
+    @GET("api/prescriptions/{stayId}")
+    fun getPrescriptions(@Path("stayId") stayId: Int):
+            Call<List<PrescriptionsResponse>>
+
+    @POST("api/prescriptions/{prescriptionId}/medicines")
+    fun addMedicine(
+        @Path("prescriptionId") prescriptionId: Int,
+        @Body newMedicine: NewMedicineDTO):
+            Call<MedicineResponse>
+
+    @PUT("api/prescriptions/{stayId}")
+    fun changeMedicines(
+        @Path("stayId") stayId: Int,
+        @Body prescriptions: ChangeMedicinesDTO
+    ): Call<Any>
+
+    @GET("api/prescriptions/{prescriptionId}/medicines")
+    fun getMedicines(@Path("prescriptionId") prescriptionId: Int):
+            Call<List<GetMedicineResponse>>
+
 }
 
 // Fonction pour gérer les callbacks des requêtes API

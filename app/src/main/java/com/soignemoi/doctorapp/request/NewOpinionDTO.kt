@@ -1,4 +1,4 @@
-package com.soignemoi.doctorapp.response
+package com.soignemoi.doctorapp.request
 
 data class NewOpinionDTO(
     val doctorId: Int,

@@ -2,7 +2,7 @@ package com.soignemoi.doctorapp.add_opinion
 
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.response.GetOpinionResponse
-import com.soignemoi.doctorapp.response.NewOpinionDTO
+import com.soignemoi.doctorapp.request.NewOpinionDTO
 import com.soignemoi.doctorapp.service
 import retrofit2.Call
 import retrofit2.Callback

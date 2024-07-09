@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation android:id="@+id/main_navigation"
+<navigation
+    android:id="@+id/main_navigation"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,10 +26,19 @@
                 app:argType="integer"
                 android:defaultValue="0" />
         </action>
+        <action
+            android:id="@+id/action_stayList_to_add_prescription"
+            app:destination="@id/add_prescription">
+            <argument
+                android:name="stayId"
+                app:argType="integer" />
+        </action>
     </fragment>
+
     <fragment
         android:id="@+id/add_opinion"
-        android:name="com.soignemoi.doctorapp.add_opinion.AddOpinionFragment">
+        android:name="com.soignemoi.doctorapp.add_opinion.AddOpinionFragment"
+        tools:layout="@layout/fragment_add_opinion">
         <argument
             android:name="doctorId"
             app:argType="integer" />
@@ -36,7 +46,19 @@
             android:name="stayId"
             app:argType="integer" />
         <action
-            android:id="@+id/from_addopinion_to_list"
+            android:id="@+id/action_addOpinion_to_stayList"
+            app:destination="@id/stay_list" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_prescription"
+        android:name="com.soignemoi.doctorapp.add_prescription.AddPrescriptionFragment"
+        tools:layout="@layout/fragment_add_prescription">
+        <argument
+            android:name="stayId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/from_addprescription_to_list"
             app:destination="@id/stay_list" />
     </fragment>
 

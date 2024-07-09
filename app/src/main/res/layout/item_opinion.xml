@@ -27,7 +27,6 @@
         android:fontFamily="@font/noto_sans_font_family"
         android:padding="5dp"
         android:layout_marginBottom="10dp"
-        android:minHeight="100dp"
         android:textSize="20dp"
         />
 

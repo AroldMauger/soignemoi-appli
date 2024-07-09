@@ -17,51 +17,53 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/time_modal"
+        android:id="@+id/editMedicine"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Traitement / Médicament"
         android:layout_marginTop="18dp"
         android:layout_marginBottom="8dp"
         android:textSize="20dp"
-        android:enabled="false"
         app:layout_constraintTop_toBottomOf="@id/close_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/reason_modal"
+        android:id="@+id/editDosage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Posologie"
         android:layout_marginBottom="8dp"
         android:textSize="20dp"
-        android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/time_modal"
+        app:layout_constraintTop_toBottomOf="@id/editMedicine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/car_modal"
+        android:id="@+id/editStartDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Date de début du traitement"
         android:layout_marginBottom="8dp"
         android:textSize="20dp"
-        android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/reason_modal"
+        app:layout_constraintTop_toBottomOf="@id/editDosage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/customer_modal"
+        android:id="@+id/editEndDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Date de fin du traitement"
         android:layout_marginBottom="8dp"
         android:textSize="20dp"
-        android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/car_modal"
+        app:layout_constraintTop_toBottomOf="@id/editStartDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Supprimer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@
             />
 
         <TextView
-            android:id="@+id/medicineNameView"
+            android:id="@+id/textMedicineName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="(ex: Pivalone)"
@@ -61,7 +61,7 @@
             />
 
         <TextView
-            android:id="@+id/medicineDosageView"
+            android:id="@+id/textDosage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="3 fois / jour"
@@ -94,7 +94,7 @@
             />
 
         <TextView
-            android:id="@+id/medicineStartDateView"
+            android:id="@+id/textStartDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="26/06/2024"
@@ -133,7 +133,7 @@
             android:layout_weight="1"
             >
             <TextView
-                android:id="@+id/medicineEndDateView"
+                android:id="@+id/textEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="29/06/2024"
@@ -154,9 +154,13 @@
                 android:textColor="@color/orange"
                 android:background="@drawable/border_black_back_white"
                 />
+
+
         </LinearLayout>
 
 
     </LinearLayout>
+
+
 
 </LinearLayout>

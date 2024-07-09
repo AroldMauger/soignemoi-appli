@@ -17,8 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
-import com.soignemoi.doctorapp.response.NewOpinionDTO
-import com.soignemoi.doctorapp.response.GetOpinionResponse
+import com.soignemoi.doctorapp.request.NewOpinionDTO
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -55,7 +54,7 @@ class AddOpinionFragment : Fragment() {
             onAddOpinion()
         }
         returnToMainButton.setOnClickListener {
-            findNavController().navigate(R.id.from_addopinion_to_list)
+            findNavController().navigate(R.id.action_addOpinion_to_stayList)
         }
 
         arguments?.let {
