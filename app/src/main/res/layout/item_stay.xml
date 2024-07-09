@@ -102,13 +102,13 @@
             android:textFontWeight="800"
             />
         <TextView
-            android:id="@+id/addOpinion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="\uf303"
             android:fontFamily="@font/fa_solid900"
             android:textColor="@color/orange"
+            android:id="@+id/addOpinion"
             />
         </LinearLayout>
         <LinearLayout

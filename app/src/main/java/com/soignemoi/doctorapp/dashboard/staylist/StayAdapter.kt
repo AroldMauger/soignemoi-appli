@@ -13,12 +13,16 @@ import kotlinx.android.synthetic.main.item_stay.view.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class StayAdapter(val items: List<GetStaysResponse>, val listener: Listener) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class StayAdapter(
+    private val doctorId: Int,  // Assurez-vous que doctorId est un paramètre ici
+    private val items: List<GetStaysResponse>,
+    private val listener: Listener
+) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
 
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
-        fun bind(stay: GetStaysResponse, listener: Listener) {
+        fun bind(stay: GetStaysResponse, doctorId: Int, listener: Listener) {
             val date = LocalDateTime.parse(stay.entrydate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
             val formattedDate = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             val formattedTime = date.format(DateTimeFormatter.ofPattern("HH':'mm"))
@@ -29,7 +33,7 @@ class StayAdapter(val items: List<GetStaysResponse>, val listener: Listener) : R
             itemView.stayUser.text = "$userFirstName $userLastName"
             itemView.stayReason.text = stay.reason.name
             itemView.addOpinion.setOnClickListener {
-                listener.onItemSelected(stay)
+                listener.onItemSelected(stay, doctorId)  // Passez doctorId ici
             }
         }
     }
@@ -41,10 +45,10 @@ class StayAdapter(val items: List<GetStaysResponse>, val listener: Listener) : R
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], listener)
+        holder.bind(items[position], doctorId, listener)
     }
 
     interface Listener {
-        fun onItemSelected(stay: GetStaysResponse)
+        fun onItemSelected(stay: GetStaysResponse, doctorId: Int)  // Passez doctorId dans l'interface
     }
 }

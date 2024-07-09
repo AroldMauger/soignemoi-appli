@@ -1,5 +1,6 @@
 package com.soignemoi.doctorapp.dashboard
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.response.GetStaysResponse
@@ -9,18 +10,31 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class DashboardViewModel : ViewModel() {
-    val stays = mutableListOf<GetStaysResponse>()
-    var selectedStay: GetStaysResponse? = null
+    private val _stays = mutableSetOf<GetStaysResponse>()
+    val stays: List<GetStaysResponse> get() = _stays.toList()  // Expose stays en tant que liste non mutable
 
-    fun getStays(doctorLastName: String? = null, callback: () -> Unit) {
-        stays.clear()
+    var selectedStay: GetStaysResponse? = null
+    var doctorId: Int = 0  // Ajoutez cette propriété pour stocker doctorId
+
+    fun getStays(doctorLastName: String? = null, context: Context, callback: () -> Unit) {
         service.getStays(doctorLastName = doctorLastName).enqueue(object : Callback<List<GetStaysResponse>> {
             override fun onResponse(call: Call<List<GetStaysResponse>>, response: Response<List<GetStaysResponse>>) {
                 if (response.isSuccessful) {
                     val staysResponse = response.body()
                     staysResponse?.let {
-                        stays.addAll(it)
-                        Log.d("Api", "Fetched stays: $stays")
+                        // Nettoyez et ajoutez les nouveaux stays
+                        _stays.clear()
+                        _stays.addAll(it)
+                        Log.d("Api", "Fetched stays: $_stays")
+
+                        // Extraire `doctorId` à partir de `GetStaysResponse` et le stocker dans SharedPreferences
+                        if (it.isNotEmpty()) {
+                            doctorId = it[0].doctor?.id ?: 0
+                            val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putInt("doctorId", doctorId)
+                            editor.apply()
+                        }
                     }
                 } else {
                     Log.e("Api", "Error fetching stays: ${response.errorBody()?.string()}")
@@ -37,8 +51,6 @@ class DashboardViewModel : ViewModel() {
 
     // Méthode pour filtrer les séjours en fonction du nom du docteur
     fun filterStaysByDoctorName(doctorName: String) {
-        val filteredStays = stays.filter { it.doctor?.name == doctorName }
-        stays.clear()
-        stays.addAll(filteredStays)
+        _stays.removeIf { it.doctor?.name != doctorName }
     }
 }

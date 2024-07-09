@@ -82,7 +82,6 @@
                         />
 
                     <LinearLayout
-                        android:id="@+id/dateAddOpinion"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
@@ -94,22 +93,14 @@
                         android:paddingTop="8dp">
 
                         <TextView
+                            android:id="@+id/dateAddOpinion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/noto_sans_bold"
                             android:gravity="center"
                             android:paddingEnd="8dp"
-                            android:text="jj/mm/aaaa" />
+                            android:hint="jj/mm/aaaa" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/fa_regular400"
-                            android:gravity="center"
-                            android:hint="\uf133"
-                            android:paddingStart="8dp"
-
-                            />
                     </LinearLayout>
 
 
@@ -158,6 +149,15 @@
                     android:fontFamily="@font/noto_sans_bold"
                     android:background="@drawable/border_none_back_red"
                     />
+
+                <!-- RecyclerView pour afficher les opinions -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/opinionsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"/>
+
 
             </LinearLayout>
         </ScrollView>

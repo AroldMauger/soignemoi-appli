@@ -15,11 +15,26 @@
             android:defaultValue="" />
         <action
             android:id="@+id/from_list_to_add_opinion"
-            app:destination="@id/add_opinion"/>
+            app:destination="@id/add_opinion">
+            <argument
+                android:name="doctorId"
+                app:argType="integer"
+                android:defaultValue="0" />
+            <argument
+                android:name="stayId"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/add_opinion"
         android:name="com.soignemoi.doctorapp.add_opinion.AddOpinionFragment">
+        <argument
+            android:name="doctorId"
+            app:argType="integer" />
+        <argument
+            android:name="stayId"
+            app:argType="integer" />
         <action
             android:id="@+id/from_addopinion_to_list"
             app:destination="@id/stay_list" />

@@ -1,5 +1,13 @@
 package com.soignemoi.doctorapp.response
 
+import com.soignemoi.doctorapp.dataclass.Doctor
+import com.soignemoi.doctorapp.dataclass.Opinion
+import com.soignemoi.doctorapp.dataclass.Prescription
+import com.soignemoi.doctorapp.dataclass.Reason
+import com.soignemoi.doctorapp.dataclass.Slot
+import com.soignemoi.doctorapp.dataclass.Speciality
+import com.soignemoi.doctorapp.dataclass.User
+
 data class GetStaysResponse(
     val id: Int,
     val entrydate: String,
@@ -14,11 +22,3 @@ data class GetStaysResponse(
     val prescriptions: List<Prescription>
 )
 
-data class Speciality(val id: Int, val name: String, val code: String)
-data class Reason(val id: Int, val name: String)
-data class Doctor(val id: Int, val name: String)
-data class Slot(val id: Int, val time: Time)
-data class User(val id: Int, val firstname: String, val lastname: String)
-data class Time(val date: String, val timezone_type: Int, val timezone: String)
-data class Opinion(val id: Int, val comment: String)
-data class Prescription(val id: Int, val medicine: String)

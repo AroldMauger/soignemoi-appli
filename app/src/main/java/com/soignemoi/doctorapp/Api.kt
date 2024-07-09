@@ -19,6 +19,10 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 import com.google.gson.GsonBuilder
+import com.soignemoi.doctorapp.response.GetOpinionResponse
+import com.soignemoi.doctorapp.response.NewOpinionDTO
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 object ApiConfiguration {
     const val TIMEOUT: Long = 60
@@ -60,6 +64,14 @@ interface Api {
         @Header("Accept") accept: String = "application/json",
         @Header("Authorization") authHeader: String? = null  // En-tête pour l'authentification
     ): Call<List<GetStaysResponse>>
+
+    @POST("api/opinions/new_opinion")
+    fun newOpinion(
+        @Body newOpinion: NewOpinionDTO
+    ): Call<Void>
+
+    @GET("api/opinions")
+    fun getOpinionsByStay(@Query("stayId") stayId: Int): Call<List<GetOpinionResponse>>
 }
 
 // Fonction pour gérer les callbacks des requêtes API
