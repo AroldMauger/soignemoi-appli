@@ -19,14 +19,10 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 import com.google.gson.GsonBuilder
-import com.soignemoi.doctorapp.dataclass.Prescription
 import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
 import com.soignemoi.doctorapp.request.EndDateRequest
-import com.soignemoi.doctorapp.request.NewMedicineDTO
 import com.soignemoi.doctorapp.response.GetOpinionResponse
 import com.soignemoi.doctorapp.request.NewOpinionDTO
-import com.soignemoi.doctorapp.response.GetMedicineResponse
-import com.soignemoi.doctorapp.response.MedicineResponse
 import com.soignemoi.doctorapp.response.PrescriptionsResponse
 import retrofit2.http.Body
 import retrofit2.http.PATCH
@@ -71,46 +67,41 @@ interface Api {
     fun getStays(
         @Query("doctorLastName") doctorLastName: String? = null, // Paramètre de requête pour le filtrage
         @Header("Accept") accept: String = "application/json",
-        @Header("Authorization") authHeader: String? = null  // En-tête pour l'authentification
+        @Header("Authorization") authHeader: String = "Bearer ${AppManager.token}"
     ): Call<List<GetStaysResponse>>
 
     @POST("api/opinions/new_opinion")
     fun newOpinion(
-        @Body newOpinion: NewOpinionDTO
+        @Body newOpinion: NewOpinionDTO,
+        @Header("Authorization") authHeader: String
+
     ): Call<Void>
 
     @GET("api/opinions")
-    fun getOpinionsByStay(@Query("stayId") stayId: Int): Call<List<GetOpinionResponse>>
+    fun getOpinionsByStay(
+        @Query("stayId") stayId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<List<GetOpinionResponse>>
 
-    @POST("api/prescriptions")
-    fun addPrescription(
-        @Body prescription: Prescription
-    ): Call<Prescription>
-
-
-    @POST("api/prescriptions/{prescriptionId}/medicines")
-    fun addMedicine(
-        @Path("prescriptionId") prescriptionId: Int,
-        @Body newMedicine: NewMedicineDTO):
-            Call<MedicineResponse>
 
     @PUT("api/prescriptions/{stayId}")
     fun changeMedicines(
         @Path("stayId") stayId: Int,
-        @Body prescriptions: ChangeMedicinesDTO
+        @Body prescriptions: ChangeMedicinesDTO,
+        @Header("Authorization") authHeader: String
     ): Call<Any>
-    @GET("api/prescriptions/{stayId}")
-    fun getPrescriptions(@Path("stayId") stayId: Int):
-            Call<List<PrescriptionsResponse>>
 
-    @GET("api/prescriptions/{prescriptionId}/medicines")
-    fun getMedicines(@Path("prescriptionId") prescriptionId: Int):
-            Call<List<GetMedicineResponse>>
+    @GET("api/prescriptions/{stayId}")
+    fun getPrescriptions(
+        @Path("stayId") stayId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<List<PrescriptionsResponse>>
 
     @PATCH("api/medicines/{medicineId}/enddate")
     fun updateEndDate(
         @Path("medicineId") medicineId: Int,
-        @Body endDateRequest: EndDateRequest
+        @Body endDateRequest: EndDateRequest,
+        @Header("Authorization") authHeader: String
     ): Call<Void>
 
 }

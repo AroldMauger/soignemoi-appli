@@ -13,7 +13,7 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        AppManager.init(this)
         startKoin(this, allModules())
         MyApplication.applicationContext = applicationContext
     }

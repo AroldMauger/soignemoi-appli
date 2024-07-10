@@ -46,7 +46,7 @@ class OpinionDetailsFragment : Fragment() {
     }
 
     private fun fetchOpinions() {
-        viewModel.getOpinionsForStay(stayId, onSuccess = { opinions ->
+        viewModel.getOpinionsForStay(stayId, requireContext(), onSuccess = { opinions ->
             opinionsAdapter.updateOpinions(opinions)
         }, onFailure = {
             Log.e("OpinionDetails", "Failed to fetch opinions: ${it.message}")

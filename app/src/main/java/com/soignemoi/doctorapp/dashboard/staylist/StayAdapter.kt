@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
@@ -16,7 +17,7 @@ import java.time.format.DateTimeFormatter
 class StayAdapter(
     private val doctorId: Int,
     private val items: List<GetStaysResponse>,
-    private val listener: Listener
+    private val listener: Listener,
 ) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

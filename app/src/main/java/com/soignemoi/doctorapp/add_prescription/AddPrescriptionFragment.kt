@@ -1,5 +1,6 @@
 package com.soignemoi.doctorapp.add_prescription
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.soignemoi.doctorapp.callback
 import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
 import com.soignemoi.doctorapp.request.NewMedicineDTO
 import com.soignemoi.doctorapp.service
+import com.soignemoi.doctorapp.AppManager  // Assurez-vous d'avoir cette classe pour gérer les tokens
 
 class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener {
 
@@ -49,12 +51,14 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
         }
         return view
     }
+
     private fun navigateToPrescriptionDetails() {
         val bundle = Bundle().apply {
             putInt("stayId", stayId)
         }
         findNavController().navigate(R.id.from_add_prescription_to_prescriptions_details, bundle)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -86,21 +90,26 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
     }
 
     private fun addPrescription(stayId: Int) {
-        service.changeMedicines(stayId, ChangeMedicinesDTO(prescriptions = medicines)).enqueue(callback(
-            success = { response ->
-                if (response.isSuccessful) {
-                    val bundle = Bundle().apply {
-                        putInt("stayId", stayId)
+        val authToken = AppManager.token  // Récupérez le token d'authentification
+        if (authToken != null) {
+            service.changeMedicines(stayId, ChangeMedicinesDTO(prescriptions = medicines), "Bearer $authToken").enqueue(callback(
+                success = { response ->
+                    if (response.isSuccessful) {
+                        val bundle = Bundle().apply {
+                            putInt("stayId", stayId)
+                        }
+                        findNavController().navigate(R.id.from_add_prescription_to_prescriptions_details, bundle)
+                    } else {
+                        Toast.makeText(requireContext(), "Erreur lors de la création de la prescription", Toast.LENGTH_SHORT).show()
                     }
-                    findNavController().navigate(R.id.from_add_prescription_to_prescriptions_details, bundle)
-                } else {
-                    Toast.makeText(requireContext(), "Erreur lors de la création de la prescription", Toast.LENGTH_SHORT).show()
+                },
+                failure = {
+                    Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
                 }
-            },
-            failure = {
-                Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
-            }
-        ))
+            ))
+        } else {
+            Toast.makeText(requireContext(), "Token manquant, veuillez vous reconnecter", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onItemRemove(position: Int) {

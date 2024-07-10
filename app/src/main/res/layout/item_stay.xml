@@ -91,6 +91,7 @@
             android:paddingHorizontal="10dp"
             android:background="@drawable/border_black_back_white"
             android:layout_marginRight="50dp"
+            android:id="@+id/addOpinion"
             >
         <TextView
             android:layout_width="wrap_content"
@@ -109,7 +110,6 @@
             android:text="\uf303"
             android:fontFamily="@font/fa_solid900"
             android:textColor="@color/orange"
-            android:id="@+id/addOpinion"
             />
         </LinearLayout>
         <LinearLayout
@@ -118,6 +118,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
             android:background="@drawable/border_black_back_white"
+            android:id="@+id/addPrescription"
             >
         <TextView
             android:layout_width="wrap_content"
@@ -130,7 +131,6 @@
             android:textFontWeight="800"
             />
         <TextView
-            android:id="@+id/addPrescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"

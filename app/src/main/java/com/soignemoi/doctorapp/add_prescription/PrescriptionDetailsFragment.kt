@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
+import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.request.EndDateRequest
 import com.soignemoi.doctorapp.response.GetMedicineResponse
 import com.soignemoi.doctorapp.response.PrescriptionsResponse
@@ -53,43 +54,52 @@ class PrescriptionDetailsFragment : Fragment(), PrescriptionAdapter.EditEndDateC
     }
 
     private fun fetchPrescriptions() {
-        service.getPrescriptions(stayId).enqueue(object : Callback<List<PrescriptionsResponse>> {
-            override fun onResponse(
-                call: Call<List<PrescriptionsResponse>>,
-                response: Response<List<PrescriptionsResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    val prescriptions = response.body() ?: emptyList()
-                    prescriptionAdapter.updatePrescriptions(prescriptions)
-                } else {
-                    Toast.makeText(requireContext(), "Erreur lors de la récupération des prescriptions", Toast.LENGTH_SHORT).show()
+        val authToken = AppManager.getToken(requireContext())
+        if (authToken != null) {
+            service.getPrescriptions(stayId, "Bearer $authToken").enqueue(object : Callback<List<PrescriptionsResponse>> {
+                override fun onResponse(
+                    call: Call<List<PrescriptionsResponse>>,
+                    response: Response<List<PrescriptionsResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val prescriptions = response.body() ?: emptyList()
+                        prescriptionAdapter.updatePrescriptions(prescriptions)
+                    } else {
+                        Toast.makeText(requireContext(), "Erreur lors de la récupération des prescriptions", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<List<PrescriptionsResponse>>, t: Throwable) {
-                Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(call: Call<List<PrescriptionsResponse>>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(requireContext(), "Erreur d'authentification", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onEditEndDateClicked(medicine: GetMedicineResponse, newEndDate: String) {
-        // Mettre à jour la date de fin sur le serveur
-        service.updateEndDate(medicine.id, EndDateRequest(newEndDate)).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    // Recharger les données après la mise à jour réussie
-                    fetchPrescriptions()
+        val authToken = AppManager.getToken(requireContext())
+        if (authToken != null) {
+            service.updateEndDate(medicine.id, EndDateRequest(newEndDate), "Bearer $authToken").enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        // Recharger les données après la mise à jour réussie
+                        fetchPrescriptions()
 
-                    // Afficher un message à l'utilisateur
-                    Toast.makeText(requireContext(), "Date de fin mise à jour avec succès", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Erreur lors de la mise à jour de la date de fin", Toast.LENGTH_SHORT).show()
+                        // Afficher un message à l'utilisateur
+                        Toast.makeText(requireContext(), "Date de fin mise à jour avec succès", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Erreur lors de la mise à jour de la date de fin", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Erreur de réseau", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(requireContext(), "Erreur d'authentification", Toast.LENGTH_SHORT).show()
+        }
     }
 }

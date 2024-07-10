@@ -14,8 +14,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.request.NewOpinionDTO
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -28,7 +26,6 @@ class AddOpinionFragment : Fragment() {
     private lateinit var descriptionTextView: EditText
     private lateinit var submitOpinion: Button
     private lateinit var returnToMainButton: Button
-    private lateinit var viewOpinionDetailsButton: Button
 
     private var doctorId: Int = 0
     private var stayId: Int = 0
@@ -44,7 +41,6 @@ class AddOpinionFragment : Fragment() {
         descriptionTextView = view.findViewById(R.id.opinion)
         submitOpinion = view.findViewById(R.id.submit_opinion)
         returnToMainButton = view.findViewById(R.id.returntomain_button)
-        viewOpinionDetailsButton = view.findViewById(R.id.displayOpinions)
 
         dateAddOpinion.setOnClickListener {
             showDatePickerDialog()
@@ -56,9 +52,6 @@ class AddOpinionFragment : Fragment() {
             findNavController().navigate(R.id.action_addOpinion_to_stayList)
         }
 
-        viewOpinionDetailsButton.setOnClickListener {
-            navigateToOpinionDetails()
-        }
         arguments?.let {
             doctorId = it.getInt("doctorId")
             stayId = it.getInt("stayId")
@@ -66,12 +59,7 @@ class AddOpinionFragment : Fragment() {
 
         return view
     }
-    private fun navigateToOpinionDetails() {
-        val bundle = Bundle().apply {
-            putInt("stayId", stayId)
-        }
-        findNavController().navigate(R.id.from_add_opinion_to_opinions_details, bundle)
-    }
+
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -118,19 +106,29 @@ class AddOpinionFragment : Fragment() {
             Log.d("AddOpinion", "New opinion: $newOpinion")
 
             // Appeler l'API pour ajouter la nouvelle opinion
-            viewModel.newOpinion(newOpinion, onSuccess = {
-                Log.d("AddOpinion", "Opinion added successfully")
-                Toast.makeText(context, "Avis ajouté", Toast.LENGTH_SHORT).show()
-            }, onFailure = {
-                Log.e("AddOpinion", "Failed to add opinion: ${it.message}")
-                Toast.makeText(context, "Impossible d'ajouter l'avis", Toast.LENGTH_SHORT).show()
-            })
+            viewModel.newOpinion(
+                newOpinion,
+                stayId,  // Passez le stayId ici
+                requireContext(),
+                onSuccess = {
+                    Log.d("AddOpinion", "Opinion added successfully")
+                    Toast.makeText(context, "Avis ajouté", Toast.LENGTH_SHORT).show()
+
+                    // Redirection vers le fragment des détails des avis
+                    val bundle = Bundle().apply {
+                        putInt("stayId", stayId)
+                    }
+                    findNavController().navigate(R.id.from_add_opinion_to_opinions_details, bundle)
+                },
+                onFailure = {
+                    Log.e("AddOpinion", "Failed to add opinion: ${it.message}")
+                    Toast.makeText(context, "Impossible d'ajouter l'avis", Toast.LENGTH_SHORT).show()
+                }
+            )
         } catch (e: Exception) {
             // Gérer les exceptions
             Toast.makeText(context, "Format de date invalide", Toast.LENGTH_SHORT).show()
             Log.e("AddOpinion", "Date parsing error", e)
         }
     }
-
-
 }

@@ -32,12 +32,12 @@ class LoginViewModel : ViewModel() {
                         val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
                         with(sharedPreferences.edit()) {
                             putString("doctorLastName", lastname)
+                            putString("authToken", AppManager.token)
                             apply()
                         }
 
                         // Appel de la méthode pour récupérer les détails du médecin
                         fetchDoctorDetails(lastname, context) { doctorName, specialityName ->
-                            // Vous pouvez éventuellement stocker ces données dans SharedPreferences ici aussi
                             callback(true)
                         }
                     } else {
@@ -54,25 +54,29 @@ class LoginViewModel : ViewModel() {
     }
 
     fun fetchDoctorDetails(lastname: String, context: Context, callback: (String, String) -> Unit) {
-        service.getStays(doctorLastName = lastname)  // Remplacez avec un paramètre correct ou adaptez l'API
-            .enqueue(object : Callback<List<GetStaysResponse>> {
-                override fun onResponse(call: Call<List<GetStaysResponse>>, response: Response<List<GetStaysResponse>>) {
-                    if (response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
-                        val stay = response.body()!![0]  // Choisissez un séjour ou filtrez selon vos besoins
-                        val doctorName = stay.doctor.name
-                        val specialityName = stay.speciality.name
+        val authToken = AppManager.getToken(context)
+        if (authToken != null) {
+            service.getStays(doctorLastName = lastname, authHeader = "Bearer $authToken")
+                .enqueue(object : Callback<List<GetStaysResponse>> {
+                    override fun onResponse(call: Call<List<GetStaysResponse>>, response: Response<List<GetStaysResponse>>) {
+                        if (response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
+                            val stay = response.body()!![0]
+                            val doctorName = stay.doctor.name
+                            val specialityName = stay.speciality.name
+                            callback(doctorName, specialityName)
+                        } else {
+                            callback("Inconnu", "Inconnue")
+                        }
+                    }
 
-                        // Appeler le callback avec le nom du médecin et le nom de la spécialité
-                        callback(doctorName, specialityName)
-                    } else {
+                    override fun onFailure(call: Call<List<GetStaysResponse>>, t: Throwable) {
                         callback("Inconnu", "Inconnue")
                     }
-                }
-
-                override fun onFailure(call: Call<List<GetStaysResponse>>, t: Throwable) {
-                    callback("Inconnu", "Inconnue")
-                }
-            })
+                })
+        } else {
+            showDialog(context, "Token manquant, veuillez vous reconnecter")
+            callback("Inconnu", "Inconnue")
+        }
     }
 
     private fun showDialog(context: Context, message: String) {
