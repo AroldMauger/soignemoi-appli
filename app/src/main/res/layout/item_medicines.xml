@@ -142,17 +142,17 @@
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:textFontWeight="800"
+                android:layout_marginEnd="10dp"
                 />
-            <TextView
+            <Button
                 android:id="@+id/editEndDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
                 android:fontFamily="@font/fa_solid900"
                 android:gravity="center"
                 android:hint="\uf303"
-                android:paddingStart="8dp"
                 android:textColor="@color/orange"
-                android:background="@drawable/border_black_back_white"
+                android:background="@drawable/button_background_orange"
                 />
 
 

@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit
 import com.google.gson.GsonBuilder
 import com.soignemoi.doctorapp.dataclass.Prescription
 import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
+import com.soignemoi.doctorapp.request.EndDateRequest
 import com.soignemoi.doctorapp.request.NewMedicineDTO
 import com.soignemoi.doctorapp.response.GetOpinionResponse
 import com.soignemoi.doctorapp.request.NewOpinionDTO
@@ -28,6 +29,7 @@ import com.soignemoi.doctorapp.response.GetMedicineResponse
 import com.soignemoi.doctorapp.response.MedicineResponse
 import com.soignemoi.doctorapp.response.PrescriptionsResponse
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -104,6 +106,12 @@ interface Api {
     @GET("api/prescriptions/{prescriptionId}/medicines")
     fun getMedicines(@Path("prescriptionId") prescriptionId: Int):
             Call<List<GetMedicineResponse>>
+
+    @PATCH("api/medicines/{medicineId}/enddate")
+    fun updateEndDate(
+        @Path("medicineId") medicineId: Int,
+        @Body endDateRequest: EndDateRequest
+    ): Call<Void>
 
 }
 
