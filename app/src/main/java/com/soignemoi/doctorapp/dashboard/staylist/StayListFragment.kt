@@ -12,6 +12,7 @@ import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardViewModel
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import kotlinx.android.synthetic.main.fragment_dashboard.list
+import kotlinx.android.synthetic.main.fragment_dashboard.titledoctor
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +30,7 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val sharedPreferences = requireContext().getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
         val doctorLastName = sharedPreferences.getString("doctorLastName", null) ?: return

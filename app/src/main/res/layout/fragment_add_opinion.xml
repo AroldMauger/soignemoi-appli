@@ -13,7 +13,18 @@
         android:background="@color/blue"
         android:orientation="vertical"
         >
-
+        <Button
+            android:id="@+id/displayOpinions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VOIR AVIS PRÉCÉDENTS"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/noto_sans_bold"
+            android:background="@drawable/border_black_back_grey"
+            />
 
         <!-- Bouton retour à l'accueil -->
         <Button
@@ -143,23 +154,5 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="AVIS PRÉCEDEMMENT AJOUTÉS"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:fontFamily="@font/noto_sans_bold"
-        android:background="@drawable/border_black_back_grey"
-        />
-
-    <!-- RecyclerView pour afficher les opinions -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/opinionsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"/>
 
 </LinearLayout>

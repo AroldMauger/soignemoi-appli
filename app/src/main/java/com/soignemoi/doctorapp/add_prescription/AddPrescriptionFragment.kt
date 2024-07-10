@@ -12,17 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.callback
-import com.soignemoi.doctorapp.dataclass.Prescription
 import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
 import com.soignemoi.doctorapp.request.NewMedicineDTO
 import com.soignemoi.doctorapp.service
-import kotlinx.android.synthetic.main.fragment_add_prescription.btn_add_prescription
-import kotlinx.android.synthetic.main.fragment_add_prescription.listMedicines
-import kotlinx.android.synthetic.main.fragment_add_prescription.submit_prescription
-import kotlinx.android.synthetic.main.item_add_medicines.editDosage
-import kotlinx.android.synthetic.main.item_add_medicines.editEndDate
-import kotlinx.android.synthetic.main.item_add_medicines.editMedicine
-import kotlinx.android.synthetic.main.item_add_medicines.editStartDate
+
 class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener {
 
     private var stayId: Int = 0
@@ -31,12 +24,13 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
     private lateinit var btnAddPrescription: Button
     private lateinit var submitPrescription: Button
     private lateinit var listMedicines: RecyclerView
-
+    private lateinit var returnToMainButton: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_prescription, container, false)
+        returnToMainButton = view.findViewById(R.id.returntomain_button)
 
         // Récupérez l'argument depuis le Bundle
         stayId = arguments?.getInt("stayId") ?: 0
@@ -45,7 +39,9 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
         btnAddPrescription = view.findViewById(R.id.btn_add_prescription)
         submitPrescription = view.findViewById(R.id.submit_prescription)
         listMedicines = view.findViewById(R.id.listMedicines)
-
+        returnToMainButton.setOnClickListener {
+            findNavController().navigate(R.id.from_addprescription_to_list)
+        }
         return view
     }
 

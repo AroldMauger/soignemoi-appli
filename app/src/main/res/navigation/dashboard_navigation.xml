@@ -33,6 +33,8 @@
                 android:name="stayId"
                 app:argType="integer" />
         </action>
+
+
     </fragment>
 
     <fragment
@@ -45,9 +47,17 @@
         <argument
             android:name="stayId"
             app:argType="integer" />
+
         <action
             android:id="@+id/action_addOpinion_to_stayList"
             app:destination="@id/stay_list" />
+        <action
+            android:id="@+id/from_add_opinion_to_opinions_details"
+            app:destination="@id/opinionDetailsFragment">
+            <argument
+                android:name="stayId"
+                app:argType="integer" />
+        </action>
     </fragment>
 
     <fragment
@@ -61,5 +71,15 @@
             android:id="@+id/from_addprescription_to_list"
             app:destination="@id/stay_list" />
     </fragment>
-
+    <fragment
+        android:id="@+id/opinionDetailsFragment"
+        android:name="com.soignemoi.doctorapp.opinion_details.OpinionDetailsFragment"
+        android:label="Opinion Details">
+        <argument
+            android:name="stayId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/return_to_main"
+            app:destination="@id/stay_list" />
+    </fragment>
 </navigation>

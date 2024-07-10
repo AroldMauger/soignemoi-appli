@@ -28,8 +28,7 @@ class AddOpinionFragment : Fragment() {
     private lateinit var descriptionTextView: EditText
     private lateinit var submitOpinion: Button
     private lateinit var returnToMainButton: Button
-    private lateinit var opinionsRecyclerView: RecyclerView
-    private lateinit var opinionsAdapter: OpinionAdapter
+    private lateinit var viewOpinionDetailsButton: Button
 
     private var doctorId: Int = 0
     private var stayId: Int = 0
@@ -45,7 +44,7 @@ class AddOpinionFragment : Fragment() {
         descriptionTextView = view.findViewById(R.id.opinion)
         submitOpinion = view.findViewById(R.id.submit_opinion)
         returnToMainButton = view.findViewById(R.id.returntomain_button)
-        opinionsRecyclerView = view.findViewById(R.id.opinionsRecyclerView)
+        viewOpinionDetailsButton = view.findViewById(R.id.displayOpinions)
 
         dateAddOpinion.setOnClickListener {
             showDatePickerDialog()
@@ -57,17 +56,22 @@ class AddOpinionFragment : Fragment() {
             findNavController().navigate(R.id.action_addOpinion_to_stayList)
         }
 
+        viewOpinionDetailsButton.setOnClickListener {
+            navigateToOpinionDetails()
+        }
         arguments?.let {
             doctorId = it.getInt("doctorId")
             stayId = it.getInt("stayId")
         }
-        opinionsRecyclerView.layoutManager = LinearLayoutManager(context)
-        opinionsAdapter = OpinionAdapter(emptyList())
-        opinionsRecyclerView.adapter = opinionsAdapter
-        fetchOpinions()  // Récupère les avis lors de la création du Fragment
+
         return view
     }
-
+    private fun navigateToOpinionDetails() {
+        val bundle = Bundle().apply {
+            putInt("stayId", stayId)
+        }
+        findNavController().navigate(R.id.from_add_opinion_to_opinions_details, bundle)
+    }
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -117,7 +121,6 @@ class AddOpinionFragment : Fragment() {
             viewModel.newOpinion(newOpinion, onSuccess = {
                 Log.d("AddOpinion", "Opinion added successfully")
                 Toast.makeText(context, "Avis ajouté", Toast.LENGTH_SHORT).show()
-                fetchOpinions()  // Recharger les avis après l'ajout
             }, onFailure = {
                 Log.e("AddOpinion", "Failed to add opinion: ${it.message}")
                 Toast.makeText(context, "Impossible d'ajouter l'avis", Toast.LENGTH_SHORT).show()
@@ -129,11 +132,5 @@ class AddOpinionFragment : Fragment() {
         }
     }
 
-    private fun fetchOpinions() {
-        viewModel.getOpinionsForStay(stayId, onSuccess = { opinions ->
-            opinionsAdapter.updateOpinions(opinions)
-        }, onFailure = {
-            Log.e("AddOpinion", "Failed to fetch opinions: ${it.message}")
-        })
-    }
+
 }

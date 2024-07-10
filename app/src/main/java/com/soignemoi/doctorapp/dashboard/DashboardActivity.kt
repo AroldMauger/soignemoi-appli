@@ -12,11 +12,11 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         // Récupérer les données depuis l'intent
-        val doctorName = intent.getStringExtra("doctorName") ?: "Inconnu"
-        val specialityName = intent.getStringExtra("specialityName") ?: "Inconnue"
+        val doctorName = intent.getStringExtra("doctorName") ?: ""
+        val specialityName = intent.getStringExtra("specialityName") ?: ""
 
         // Définir le texte du TextView avec les informations du médecin et de la spécialité
-        titledoctor.text = "Docteur $doctorName, $specialityName"
+        titledoctor.text = "Bonjour $specialityName $doctorName !"
 
     }
 }
