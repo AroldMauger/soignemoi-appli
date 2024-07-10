@@ -19,6 +19,18 @@
         android:orientation="vertical"
         >
 
+        <Button
+            android:id="@+id/displayPrescriptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VOIR PRESCRIPTIONS"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/noto_sans_bold"
+            android:background="@drawable/border_black_back_grey"
+            />
 
         <!-- Bouton retour à l'accueil -->
         <Button

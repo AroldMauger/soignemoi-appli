@@ -61,6 +61,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/opinionDetailsFragment"
+        android:name="com.soignemoi.doctorapp.opinion_details.OpinionDetailsFragment"
+        android:label="Opinion Details">
+        <argument
+            android:name="stayId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/return_to_main"
+            app:destination="@id/stay_list" />
+    </fragment>
+
+    <fragment
         android:id="@+id/add_prescription"
         android:name="com.soignemoi.doctorapp.add_prescription.AddPrescriptionFragment"
         tools:layout="@layout/fragment_add_prescription">
@@ -70,11 +82,19 @@
         <action
             android:id="@+id/from_addprescription_to_list"
             app:destination="@id/stay_list" />
+        <action
+            android:id="@+id/from_add_prescription_to_prescriptions_details"
+            app:destination="@id/prescriptionDetailsFragment">
+            <argument
+                android:name="stayId"
+                app:argType="integer" />
+        </action>
     </fragment>
+
     <fragment
-        android:id="@+id/opinionDetailsFragment"
-        android:name="com.soignemoi.doctorapp.opinion_details.OpinionDetailsFragment"
-        android:label="Opinion Details">
+        android:id="@+id/prescriptionDetailsFragment"
+        android:name="com.soignemoi.doctorapp.add_prescription.PrescriptionDetailsFragment"
+        android:label="Prescription Details">
         <argument
             android:name="stayId"
             app:argType="integer" />

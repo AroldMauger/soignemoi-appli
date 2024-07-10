@@ -85,9 +85,6 @@ interface Api {
         @Body prescription: Prescription
     ): Call<Prescription>
 
-    @GET("api/prescriptions/{stayId}")
-    fun getPrescriptions(@Path("stayId") stayId: Int):
-            Call<List<PrescriptionsResponse>>
 
     @POST("api/prescriptions/{prescriptionId}/medicines")
     fun addMedicine(
@@ -100,6 +97,9 @@ interface Api {
         @Path("stayId") stayId: Int,
         @Body prescriptions: ChangeMedicinesDTO
     ): Call<Any>
+    @GET("api/prescriptions/{stayId}")
+    fun getPrescriptions(@Path("stayId") stayId: Int):
+            Call<List<PrescriptionsResponse>>
 
     @GET("api/prescriptions/{prescriptionId}/medicines")
     fun getMedicines(@Path("prescriptionId") prescriptionId: Int):

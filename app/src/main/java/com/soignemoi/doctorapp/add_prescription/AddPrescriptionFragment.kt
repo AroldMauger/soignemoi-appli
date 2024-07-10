@@ -25,13 +25,18 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
     private lateinit var submitPrescription: Button
     private lateinit var listMedicines: RecyclerView
     private lateinit var returnToMainButton: Button
+    private lateinit var viewPrescriptionDetailsButton: Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_prescription, container, false)
         returnToMainButton = view.findViewById(R.id.returntomain_button)
-
+        viewPrescriptionDetailsButton = view.findViewById(R.id.displayPrescriptions)
+        viewPrescriptionDetailsButton.setOnClickListener {
+            navigateToPrescriptionDetails()
+        }
         // Récupérez l'argument depuis le Bundle
         stayId = arguments?.getInt("stayId") ?: 0
 
@@ -44,7 +49,12 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
         }
         return view
     }
-
+    private fun navigateToPrescriptionDetails() {
+        val bundle = Bundle().apply {
+            putInt("stayId", stayId)
+        }
+        findNavController().navigate(R.id.from_add_prescription_to_prescriptions_details, bundle)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -79,7 +89,10 @@ class AddPrescriptionFragment : Fragment(), MedicineAdapter.OnItemClickListener 
         service.changeMedicines(stayId, ChangeMedicinesDTO(prescriptions = medicines)).enqueue(callback(
             success = { response ->
                 if (response.isSuccessful) {
-                    findNavController().navigate(R.id.from_addprescription_to_list)
+                    val bundle = Bundle().apply {
+                        putInt("stayId", stayId)
+                    }
+                    findNavController().navigate(R.id.from_add_prescription_to_prescriptions_details, bundle)
                 } else {
                     Toast.makeText(requireContext(), "Erreur lors de la création de la prescription", Toast.LENGTH_SHORT).show()
                 }
