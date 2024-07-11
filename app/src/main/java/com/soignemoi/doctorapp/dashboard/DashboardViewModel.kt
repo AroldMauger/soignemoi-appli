@@ -3,6 +3,7 @@ package com.soignemoi.doctorapp.dashboard
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import com.soignemoi.doctorapp.service
 import retrofit2.Call
@@ -17,7 +18,8 @@ class DashboardViewModel : ViewModel() {
     var doctorId: Int = 0  // Ajoutez cette propriété pour stocker doctorId
 
     fun getStays(doctorLastName: String? = null, context: Context, callback: () -> Unit) {
-        service.getStays(doctorLastName = doctorLastName).enqueue(object : Callback<List<GetStaysResponse>> {
+        val authToken = AppManager.token ?: ""  // Récupérez le token depuis AppManager
+        service.getStays(doctorLastName = doctorLastName, authHeader = "Bearer $authToken").enqueue(object : Callback<List<GetStaysResponse>> {
             override fun onResponse(call: Call<List<GetStaysResponse>>, response: Response<List<GetStaysResponse>>) {
                 if (response.isSuccessful) {
                     val staysResponse = response.body()

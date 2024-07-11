@@ -2,10 +2,8 @@ package com.soignemoi.doctorapp.login
 
 import android.app.AlertDialog
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.AppManager
-import com.soignemoi.doctorapp.request.LoginRequest
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import com.soignemoi.doctorapp.response.LoginResponse
 import com.soignemoi.doctorapp.service
@@ -15,46 +13,30 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    fun logindoctor(
-        lastname: String,
-        identification: String,
-        callback: (Boolean) -> Unit,
-        context: Context
-    ) {
-        service.logindoctor(lastname, identification)
-            .enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if (response.isSuccessful && response.body() != null) {
-                        AppManager.token = response.body()!!.token
-                        Log.d("LoginViewModel", "Token: ${AppManager.token}")
-
-                        // Stockage du `doctorLastName` dans SharedPreferences
-                        val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
-                        with(sharedPreferences.edit()) {
-                            putString("doctorLastName", lastname)
-                            putString("authToken", AppManager.token)
-                            apply()
-                        }
-
-                        // Appel de la méthode pour récupérer les détails du médecin
-                        fetchDoctorDetails(lastname, context) { doctorName, specialityName ->
-                            callback(true)
-                        }
+    fun loginDoctor(lastname: String, identification: String, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
+        service.logindoctor(lastname, identification).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    if (loginResponse?.status == "success") {
+                        AppManager.token = loginResponse.token  // Stocker le token
+                        onSuccess()
                     } else {
-                        showDialog(context, "Identifiants incorrects")
-                        callback(false)
+                        onFailure(Throwable("Authentication failed"))
                     }
+                } else {
+                    onFailure(Throwable("Error: ${response.message()}"))
                 }
+            }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    showDialog(context, "Erreur de connexion")
-                    callback(false)
-                }
-            })
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                onFailure(t)
+            }
+        })
     }
 
-    fun fetchDoctorDetails(lastname: String, context: Context, callback: (String, String) -> Unit) {
-        val authToken = AppManager.getToken(context)
+    fun fetchDoctorDetails(lastname: String, callback: (String, String) -> Unit) {
+        val authToken = AppManager.token
         if (authToken != null) {
             service.getStays(doctorLastName = lastname, authHeader = "Bearer $authToken")
                 .enqueue(object : Callback<List<GetStaysResponse>> {
@@ -74,16 +56,15 @@ class LoginViewModel : ViewModel() {
                     }
                 })
         } else {
-            showDialog(context, "Token manquant, veuillez vous reconnecter")
             callback("Inconnu", "Inconnue")
         }
     }
 
     private fun showDialog(context: Context, message: String) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle("Erreur")
-        alertDialog.setMessage(message)
-        alertDialog.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-        alertDialog.show()
+        AlertDialog.Builder(context)
+            .setTitle("Erreur")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }

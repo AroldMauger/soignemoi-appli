@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardActivity
-import kotlinx.android.synthetic.main.activity_main.*  // Assurez-vous que vous utilisez le bon layout ici
+import kotlinx.android.synthetic.main.activity_main.identification
+import kotlinx.android.synthetic.main.activity_main.lastname
+import kotlinx.android.synthetic.main.activity_main.loginButton
+import kotlinx.android.synthetic.main.activity_main.titleofapp
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         val startMoi = text.indexOf("Moi")
         val endMoi = startMoi + "Moi".length
 
-        val greenColor = resources.getColor(R.color.green)
-        val orangeColor = resources.getColor(R.color.orange)
+        val greenColor = resources.getColor(R.color.green, theme)
+        val orangeColor = resources.getColor(R.color.orange, theme)
 
         spannableString.setSpan(
             ForegroundColorSpan(greenColor),
@@ -58,20 +62,33 @@ class MainActivity : AppCompatActivity() {
             val lastnameValue = lastname.text.toString()
             val identificationValue = identification.text.toString()
 
-            // Log les valeurs pour déboguer
-            println("Trying to log in with lastname: $lastnameValue, identification: $identificationValue")
+            // Vérifiez que les valeurs ne sont pas vides
+            if (lastnameValue.isBlank() || identificationValue.isBlank()) {
+                showDialog("Veuillez entrer un nom et un identifiant")
+                return@setOnClickListener
+            }
 
-            viewModel.logindoctor(lastnameValue, identificationValue, { success ->
-                if (success) {
-                    viewModel.fetchDoctorDetails(lastnameValue, this) { doctorName, specialityName ->
-                        val intent = Intent(this, DashboardActivity::class.java).apply {
-                            putExtra("doctorName", doctorName)
-                            putExtra("specialityName", specialityName)
-                        }
-                        startActivity(intent)
+            // Appel de loginDoctor avec des callbacks pour success et failure
+            viewModel.loginDoctor(lastnameValue, identificationValue, {
+                viewModel.fetchDoctorDetails(lastnameValue) { doctorName, specialityName ->
+                    val intent = Intent(this, DashboardActivity::class.java).apply {
+                        putExtra("doctorName", doctorName)
+                        putExtra("specialityName", specialityName)
                     }
+                    startActivity(intent)
+                    finish()  // Optionnel : pour empêcher l'utilisateur de revenir à l'écran de connexion
                 }
-            }, this)
+            }, { error ->
+                showDialog("Erreur lors de la connexion : ${error.message}")
+            })
         }
+    }
+
+    private fun showDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Erreur")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }

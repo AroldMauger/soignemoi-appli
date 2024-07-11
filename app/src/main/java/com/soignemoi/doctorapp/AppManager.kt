@@ -21,8 +21,4 @@ object AppManager {
     fun clearToken() {
         preferences.edit().remove(TOKEN_KEY).apply()
     }
-
-    fun getToken(context: Context): String? {
-        return preferences.getString(TOKEN_KEY, null)
-    }
 }

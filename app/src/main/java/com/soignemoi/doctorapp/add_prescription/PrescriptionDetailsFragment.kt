@@ -54,7 +54,7 @@ class PrescriptionDetailsFragment : Fragment(), PrescriptionAdapter.EditEndDateC
     }
 
     private fun fetchPrescriptions() {
-        val authToken = AppManager.getToken(requireContext())
+        val authToken = AppManager.token
         if (authToken != null) {
             service.getPrescriptions(stayId, "Bearer $authToken").enqueue(object : Callback<List<PrescriptionsResponse>> {
                 override fun onResponse(
@@ -79,7 +79,7 @@ class PrescriptionDetailsFragment : Fragment(), PrescriptionAdapter.EditEndDateC
     }
 
     override fun onEditEndDateClicked(medicine: GetMedicineResponse, newEndDate: String) {
-        val authToken = AppManager.getToken(requireContext())
+        val authToken = AppManager.token
         if (authToken != null) {
             service.updateEndDate(medicine.id, EndDateRequest(newEndDate), "Bearer $authToken").enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {

@@ -26,6 +26,7 @@ class AddOpinionFragment : Fragment() {
     private lateinit var descriptionTextView: EditText
     private lateinit var submitOpinion: Button
     private lateinit var returnToMainButton: Button
+    private lateinit var viewOpinionDetailsButton: Button
 
     private var doctorId: Int = 0
     private var stayId: Int = 0
@@ -41,6 +42,7 @@ class AddOpinionFragment : Fragment() {
         descriptionTextView = view.findViewById(R.id.opinion)
         submitOpinion = view.findViewById(R.id.submit_opinion)
         returnToMainButton = view.findViewById(R.id.returntomain_button)
+        viewOpinionDetailsButton = view.findViewById(R.id.displayOpinions)
 
         dateAddOpinion.setOnClickListener {
             showDatePickerDialog()
@@ -51,13 +53,22 @@ class AddOpinionFragment : Fragment() {
         returnToMainButton.setOnClickListener {
             findNavController().navigate(R.id.action_addOpinion_to_stayList)
         }
-
+        viewOpinionDetailsButton.setOnClickListener {
+            navigateToOpinionDetails()
+        }
         arguments?.let {
             doctorId = it.getInt("doctorId")
             stayId = it.getInt("stayId")
         }
 
         return view
+    }
+
+    private fun navigateToOpinionDetails() {
+        val bundle = Bundle().apply {
+            putInt("stayId", stayId)
+        }
+        findNavController().navigate(R.id.from_add_opinion_to_opinions_details, bundle)
     }
 
     private fun showDatePickerDialog() {

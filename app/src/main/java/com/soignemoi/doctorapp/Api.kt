@@ -17,17 +17,17 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
-import com.google.gson.GsonBuilder
-import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
-import com.soignemoi.doctorapp.request.EndDateRequest
-import com.soignemoi.doctorapp.response.GetOpinionResponse
-import com.soignemoi.doctorapp.request.NewOpinionDTO
-import com.soignemoi.doctorapp.response.PrescriptionsResponse
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
+import com.soignemoi.doctorapp.request.EndDateRequest
+import com.soignemoi.doctorapp.request.LoginRequest
+import com.soignemoi.doctorapp.response.GetOpinionResponse
+import com.soignemoi.doctorapp.request.NewOpinionDTO
+import com.soignemoi.doctorapp.response.PrescriptionsResponse
+import java.util.concurrent.TimeUnit
 
 object ApiConfiguration {
     const val TIMEOUT: Long = 60
@@ -39,20 +39,32 @@ val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
 }
 
 // Configuration du client HTTP
-val client = OkHttpClient.Builder()
-    .connectTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
-    .addInterceptor(interceptor)
-    .retryOnConnectionFailure(true)
-    .build()
+private val client by lazy {
+    OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val token = AppManager.token
+            val requestBuilder = chain.request().newBuilder()
+            token?.let {
+                requestBuilder.addHeader("Authorization", "Bearer $it")
+            }
+            chain.proceed(requestBuilder.build())
+        }
+        .addInterceptor(interceptor)
+        .connectTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
+        .readTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
+        .writeTimeout(ApiConfiguration.TIMEOUT, TimeUnit.SECONDS)
+        .build()
+}
 
 // Création de l'instance Retrofit
-val service: Api = Retrofit.Builder()
-    .baseUrl(BuildConfig.API_URL)  // Assurez-vous que BuildConfig.API_URL est défini correctement dans votre gradle
-    .client(client)
-    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-    .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-    .build()
-    .create(Api::class.java)
+val service: Api by lazy {
+    Retrofit.Builder()
+        .baseUrl(BuildConfig.API_URL)
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(Api::class.java)
+}
 
 // Définition de l'interface API
 interface Api {
@@ -65,16 +77,15 @@ interface Api {
 
     @GET("api/stays")
     fun getStays(
-        @Query("doctorLastName") doctorLastName: String? = null, // Paramètre de requête pour le filtrage
+        @Query("doctorLastName") doctorLastName: String? = null,
         @Header("Accept") accept: String = "application/json",
-        @Header("Authorization") authHeader: String = "Bearer ${AppManager.token}"
+        @Header("Authorization") authHeader: String  // Ajoutez l'en-tête Authorization ici
     ): Call<List<GetStaysResponse>>
 
     @POST("api/opinions/new_opinion")
     fun newOpinion(
         @Body newOpinion: NewOpinionDTO,
         @Header("Authorization") authHeader: String
-
     ): Call<Void>
 
     @GET("api/opinions")
@@ -82,7 +93,6 @@ interface Api {
         @Query("stayId") stayId: Int,
         @Header("Authorization") authHeader: String
     ): Call<List<GetOpinionResponse>>
-
 
     @PUT("api/prescriptions/{stayId}")
     fun changeMedicines(
@@ -103,7 +113,6 @@ interface Api {
         @Body endDateRequest: EndDateRequest,
         @Header("Authorization") authHeader: String
     ): Call<Void>
-
 }
 
 // Fonction pour gérer les callbacks des requêtes API
