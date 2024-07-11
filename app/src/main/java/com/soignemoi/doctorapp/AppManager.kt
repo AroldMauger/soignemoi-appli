@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 
 object AppManager {
     private const val PREF_NAME = "doctorapp_prefs"
-    private const val TOKEN_KEY = "auth_token"
+    private const val TOKEN_KEY = "csrf_token"
     private lateinit var preferences: SharedPreferences
 
     fun init(context: Context) {

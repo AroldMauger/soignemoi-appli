@@ -2,6 +2,7 @@ package com.soignemoi.doctorapp.add_opinion
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ class AddOpinionViewModel : ViewModel() {
     ) {
         val authToken = AppManager.token
         if (authToken != null) {
+            Log.d("AddOpinionViewModel", "CSRF Token utilisé pour ajouter un avis: $authToken")
             service.newOpinion(newOpinion, "Bearer $authToken").enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {

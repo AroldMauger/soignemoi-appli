@@ -79,7 +79,7 @@ interface Api {
     fun getStays(
         @Query("doctorLastName") doctorLastName: String? = null,
         @Header("Accept") accept: String = "application/json",
-        @Header("Authorization") authHeader: String  // Ajoutez l'en-tête Authorization ici
+        @Header("Authorization") authHeader: String
     ): Call<List<GetStaysResponse>>
 
     @POST("api/opinions/new_opinion")

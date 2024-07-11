@@ -2,6 +2,7 @@ package com.soignemoi.doctorapp.login
 
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.response.GetStaysResponse
@@ -18,8 +19,11 @@ class LoginViewModel : ViewModel() {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
+                    Log.d("LoginViewModel", "Contenu de la réponse: $loginResponse")
                     if (loginResponse?.status == "success") {
-                        AppManager.token = loginResponse.token  // Stocker le token
+                        AppManager.token = loginResponse.csrf_token  // Stocker le token
+                        Log.d("LoginViewModel", "CSRF Token récupéré: ${loginResponse.csrf_token}")
+
                         onSuccess()
                     } else {
                         onFailure(Throwable("Authentication failed"))
