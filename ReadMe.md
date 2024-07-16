@@ -9,5 +9,5 @@ Le projet a été réalisé avec les technologies suivantes :
 
 - Kotlin 
 - Android Studio 
-- Appel au backend Symfony de l'application web (https://github.com/AroldMauger/soignemoi-web.git)
+- Appel au backend Symfony de l'application web (https://soignemoi.alwaysdata.net/)
 

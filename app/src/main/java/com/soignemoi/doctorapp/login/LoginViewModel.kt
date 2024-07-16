@@ -3,6 +3,7 @@ package com.soignemoi.doctorapp.login
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.response.GetStaysResponse
@@ -14,15 +15,19 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    fun loginDoctor(lastname: String, identification: String, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
+    fun loginDoctor(context: Context, lastname: String, identification: String, onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {
         service.logindoctor(lastname, identification).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
-                    Log.d("LoginViewModel", "Contenu de la réponse: $loginResponse")
                     if (loginResponse?.status == "success") {
                         AppManager.token = loginResponse.csrf_token  // Stocker le token
-                        Log.d("LoginViewModel", "CSRF Token récupéré: ${loginResponse.csrf_token}")
+
+                        // Sauvegarder doctorLastName dans SharedPreferences
+                        val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("doctorLastName", lastname)
+                        editor.apply()
 
                         onSuccess()
                     } else {
@@ -38,6 +43,7 @@ class LoginViewModel : ViewModel() {
             }
         })
     }
+
 
     fun fetchDoctorDetails(lastname: String, callback: (String, String) -> Unit) {
         val authToken = AppManager.token

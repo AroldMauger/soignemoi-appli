@@ -5,7 +5,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.soignemoi.doctorapp.R
@@ -17,7 +16,7 @@ import java.time.format.DateTimeFormatter
 class StayAdapter(
     private val doctorId: Int,
     private val items: List<GetStaysResponse>,
-    private val listener: Listener,
+    private val listener: Listener
 ) : RecyclerView.Adapter<StayAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,9 +25,10 @@ class StayAdapter(
         fun bind(stay: GetStaysResponse, doctorId: Int, listener: Listener) {
             val date = LocalDateTime.parse(stay.entrydate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
             val formattedDate = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            val formattedTime = date.format(DateTimeFormatter.ofPattern("HH':'mm"))
+            val formattedTime = date.format(DateTimeFormatter.ofPattern("HH:mm"))
             val userFirstName = stay.user.firstname
             val userLastName = stay.user.lastname
+
             itemView.stayDate.text = formattedDate
             itemView.stayTime.text = formattedTime
             itemView.stayUser.text = "$userFirstName $userLastName"
@@ -38,7 +38,6 @@ class StayAdapter(
             }
             itemView.addPrescription.setOnClickListener {
                 listener.onAddPrescription(stay, doctorId)
-
             }
         }
     }

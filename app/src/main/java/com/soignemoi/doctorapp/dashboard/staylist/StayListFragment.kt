@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,7 +17,6 @@ import com.soignemoi.doctorapp.dashboard.DashboardViewModel
 import com.soignemoi.doctorapp.login.MainActivity
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import kotlinx.android.synthetic.main.fragment_dashboard.list
-import kotlinx.android.synthetic.main.fragment_dashboard.titledoctor
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -43,14 +41,18 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
         }
 
         val sharedPreferences = requireContext().getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
-        val doctorLastName = sharedPreferences.getString("doctorLastName", null) ?: return
-        viewModel.doctorId = sharedPreferences.getInt("doctorId", 0)  // Récupérez doctorId depuis SharedPreferences
+        val doctorLastName = sharedPreferences.getString("doctorLastName", null)
+        if (doctorLastName == null) {
+            showDialog("Aucun nom de docteur trouvé dans les préférences.")
+            return
+        }
 
+        viewModel.doctorId = sharedPreferences.getInt("doctorId", 0)
+
+        // Récupérer les séjours sans délai
         viewModel.getStays(doctorLastName, requireContext()) {
-            // Appliquez le filtrage dans ViewModel en cas de besoin
             viewModel.filterStaysByDoctorName(doctorLastName)
-            // Assignez les données filtrées à l’adaptateur
-            list.adapter = StayAdapter(viewModel.doctorId, viewModel.stays, this)  // Passez doctorId ici
+            list.adapter = StayAdapter(viewModel.doctorId, viewModel.stays, this)
             list.layoutManager = LinearLayoutManager(context)
         }
     }
@@ -88,5 +90,13 @@ class StayListFragment : Fragment(), StayAdapter.Listener {
         val intent = Intent(activity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    private fun showDialog(message: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Erreur")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }

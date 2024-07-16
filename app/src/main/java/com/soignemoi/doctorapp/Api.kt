@@ -9,7 +9,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -23,7 +22,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import com.soignemoi.doctorapp.request.ChangeMedicinesDTO
 import com.soignemoi.doctorapp.request.EndDateRequest
-import com.soignemoi.doctorapp.request.LoginRequest
 import com.soignemoi.doctorapp.response.GetOpinionResponse
 import com.soignemoi.doctorapp.request.NewOpinionDTO
 import com.soignemoi.doctorapp.response.PrescriptionsResponse

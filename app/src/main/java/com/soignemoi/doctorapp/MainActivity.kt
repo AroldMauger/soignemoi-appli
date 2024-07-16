@@ -9,10 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardActivity
-import kotlinx.android.synthetic.main.activity_main.identification
-import kotlinx.android.synthetic.main.activity_main.lastname
-import kotlinx.android.synthetic.main.activity_main.loginButton
-import kotlinx.android.synthetic.main.activity_main.titleofapp
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -27,14 +24,11 @@ class MainActivity : AppCompatActivity() {
 
         // Set up colored text
         val text = "L’application réservée aux médecins de SoigneMoi"
-
         val spannableString = SpannableString(text)
-
         val startSoigne = text.indexOf("Soigne")
         val endSoigne = startSoigne + "Soigne".length
         val startMoi = text.indexOf("Moi")
         val endMoi = startMoi + "Moi".length
-
         val greenColor = resources.getColor(R.color.green, theme)
         val orangeColor = resources.getColor(R.color.orange, theme)
 
@@ -44,7 +38,6 @@ class MainActivity : AppCompatActivity() {
             endSoigne,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-
         spannableString.setSpan(
             ForegroundColorSpan(orangeColor),
             startMoi,
@@ -69,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Appel de loginDoctor avec des callbacks pour success et failure
-            viewModel.loginDoctor(lastnameValue, identificationValue, {
+            viewModel.loginDoctor(this, lastnameValue, identificationValue, {
                 viewModel.fetchDoctorDetails(lastnameValue) { doctorName, specialityName ->
                     val intent = Intent(this, DashboardActivity::class.java).apply {
                         putExtra("doctorName", doctorName)

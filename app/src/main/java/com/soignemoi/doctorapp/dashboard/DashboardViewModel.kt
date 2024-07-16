@@ -27,7 +27,6 @@ class DashboardViewModel : ViewModel() {
                         // Nettoyez et ajoutez les nouveaux stays
                         _stays.clear()
                         _stays.addAll(it)
-                        Log.d("Api", "Fetched stays: $_stays")
 
                         // Extraire `doctorId` à partir de `GetStaysResponse` et le stocker dans SharedPreferences
                         if (it.isNotEmpty()) {
@@ -56,3 +55,4 @@ class DashboardViewModel : ViewModel() {
         _stays.removeIf { it.doctor?.name != doctorName }
     }
 }
+
