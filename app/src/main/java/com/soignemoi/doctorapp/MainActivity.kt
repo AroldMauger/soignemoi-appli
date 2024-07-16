@@ -1,4 +1,4 @@
-package com.soignemoi.doctorapp.login
+package com.soignemoi.doctorapp
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardActivity
+import com.soignemoi.doctorapp.login.LoginViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
             // Appel de loginDoctor avec des callbacks pour success et failure
             viewModel.loginDoctor(this, lastnameValue, identificationValue, {
-                viewModel.fetchDoctorDetails(lastnameValue) { doctorName, specialityName ->
+                viewModel.fetchDoctorDetails(this, lastnameValue) { doctorName, specialityName ->
                     val intent = Intent(this, DashboardActivity::class.java).apply {
                         putExtra("doctorName", doctorName)
                         putExtra("specialityName", specialityName)
@@ -76,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
+
 
     private fun showDialog(message: String) {
         AlertDialog.Builder(this)

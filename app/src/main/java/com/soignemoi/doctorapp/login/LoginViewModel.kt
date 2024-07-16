@@ -2,10 +2,10 @@ package com.soignemoi.doctorapp.login
 
 import android.app.AlertDialog
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import com.soignemoi.doctorapp.AppManager
+import com.soignemoi.doctorapp.MainActivity
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import com.soignemoi.doctorapp.response.LoginResponse
 import com.soignemoi.doctorapp.service
@@ -44,8 +44,7 @@ class LoginViewModel : ViewModel() {
         })
     }
 
-
-    fun fetchDoctorDetails(lastname: String, callback: (String, String) -> Unit) {
+    fun fetchDoctorDetails(context: Context, lastname: String, callback: (String, String) -> Unit) {
         val authToken = AppManager.token
         if (authToken != null) {
             service.getStays(doctorLastName = lastname, authHeader = "Bearer $authToken")
@@ -57,24 +56,35 @@ class LoginViewModel : ViewModel() {
                             val specialityName = stay.speciality.name
                             callback(doctorName, specialityName)
                         } else {
-                            callback("Inconnu", "Inconnue")
+                            showDialog(context, "Pas de rendez-vous pour le moment, vous pouvez vous déconnecter") {
+                                redirectToMainActivity(context)
+                            }
                         }
                     }
 
                     override fun onFailure(call: Call<List<GetStaysResponse>>, t: Throwable) {
-                        callback("Inconnu", "Inconnue")
+                        callback("", "")
                     }
                 })
         } else {
-            callback("Inconnu", "Inconnue")
+            callback("", "")
         }
     }
 
-    private fun showDialog(context: Context, message: String) {
+
+    private fun showDialog(context: Context, message: String, onPositiveButtonClick: () -> Unit) {
         AlertDialog.Builder(context)
             .setTitle("Erreur")
             .setMessage(message)
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                onPositiveButtonClick()
+            }
             .show()
+    }
+
+    private fun redirectToMainActivity(context: Context) {
+        val intent = Intent(context, MainActivity::class.java)
+        context.startActivity(intent)
     }
 }

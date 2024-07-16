@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.soignemoi.doctorapp.AppManager
 import com.soignemoi.doctorapp.R
 import com.soignemoi.doctorapp.dashboard.DashboardViewModel
-import com.soignemoi.doctorapp.login.MainActivity
+import com.soignemoi.doctorapp.MainActivity
 import com.soignemoi.doctorapp.response.GetStaysResponse
 import kotlinx.android.synthetic.main.fragment_dashboard.list
 import org.koin.android.viewmodel.ext.android.viewModel
