@@ -8,7 +8,7 @@ Les boutons "Avis" et "Prescriptions" sont présents sur chaque séjour de la li
 1. Pour afficher le fichier d'installation .apk, rendez-vous à l'adresse : https://github.com/AroldMauger/soignemoi-appli/releases/tag/0.1
 2. Téléchargez le fichier d'installation soignemoi-mobile.apk sur votre téléphone. Un message de mise en garde contre un fichier potentiellement dangereux s'affiche. Choisissez de télécharger quand même.
 3. Ouvrez le fichier .apk téléchargé et installez l'application. Un message de Google Play Protect vous propose d'analyser l'appli. Choisissez "plus de détails" puis "Installer sans analyser".
-4. Lancez l'application : la page de connexion pour les médecins s'affichent.
+4. Lancez l'application : la page de connexion pour les médecins s'affiche.
    
 ### Note 1
 Pour vous connecter en tant que médecin, vous devriez d'abord ajouter un médecin depuis la session administrateur de l'application web. Un médecin se connecte depuis l'application mobile grâce à son nom de famille et son matricule. Pour plus d'informations sur l'ajout de médecins, consultez le fichier ReadMe du repository GitHub : https://github.com/AroldMauger/soignemoi-web.git
